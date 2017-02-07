@@ -3,14 +3,14 @@ class Customer < ActiveRecord::Base
   has_many :service_engineers, through: :tickets
   validates :name, :address, :latitude, :longitude, presence: true
   ALL_SLOTS = ["09 AM", "10 AM", "11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM"]
-
+  FIRST_SLOT = "09 AM"
   def raise_ticket
-    ticket = tickets.build(status: 'open', raised_at: Time.zone.now)
+    ticket = tickets.build(status: 'open', raised_at: Time.now)
     sorted_unassigned_service_engineers = ServiceEngineer.all_unassigned_engineers(self)
     sorted_nearby_tickets = Ticket.nearby_tickets(self)
     allocated_slot = ''
     sorted_nearby_tickets.each do |nearby_ticket|
-      search_finish = false
+      @search_finish = false
       @se = ServiceEngineer.find(nearby_ticket[:se_id])
       if @se.tickets.present? && @se.tickets.count < 9
         slots = @se.tickets.map(&:allocated_slot)
@@ -20,28 +20,26 @@ class Customer < ActiveRecord::Base
         available_slots.each do |sl|
           next_available_slots << sl if future_slot?(sl, ticket)
         end
-
         if next_available_slots.present?
-          allocated_slot = Time.zone.parse(next_available_slots.first)
-          search_finish = true
+          allocated_slot = Time.parse(next_available_slots.first)
+          @search_finish = true
         end
       end
-      break if search_finish
+      break if @search_finish
     end
 
-    if @se.blank?
+    if !@search_finish
       @se = ServiceEngineer.find(sorted_unassigned_service_engineers.first[:se_id])
       available_slots = []
 
       ALL_SLOTS.each do |sl|
         available_slots << sl if future_slot?(sl, ticket)
       end
-
       allocated_slot =
         if available_slots.present?
-          Time.zone.parse(available_slots.first)
+          Time.parse(available_slots.first)
         else
-          allocated_slot = Time.zone.parse("09 AM")
+          allocated_slot = Time.parse(FIRST_SLOT)
         end
     end
 
@@ -60,6 +58,6 @@ class Customer < ActiveRecord::Base
   private
 
   def future_slot?(slot, ticket)
-    Time.zone.parse(slot).hour > ticket.raised_at.hour
+    Time.parse(slot).hour > ticket.raised_at.hour
   end
 end

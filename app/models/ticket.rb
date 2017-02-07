@@ -24,7 +24,7 @@ class Ticket < ActiveRecord::Base
 
   def self.update_status_after_finish
     all.where(status: 'open').each do |ticket|
-      ticket.update_attribute(:status, "close") if Time.zone.now.hour > (ticket.allocated_slot.hour + 1)
+      ticket.update_attribute(:status, "close") if Time.now.hour > (ticket.allocated_slot.hour + 1)
     end
   end
 end

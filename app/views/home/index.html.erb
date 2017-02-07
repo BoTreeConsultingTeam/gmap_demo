@@ -28,12 +28,12 @@
       </thead>
         <tbody>
           <% @tickets.each do |ticket| %>
-            <% current_engineer = ticket.service_engineers.first %>
+            <% current_engineer = ticket.current_service_engineer %>
             <tr>
               <td><%= ticket.id %></td>
               <td><%= ticket.customer.name %></td>
               <td><%= current_engineer.name %></td>
-              <td><%= Date.today %></td>
+              <td><%= Time.zone.today %></td>
               <td><%= ticket.raised_at.strftime('%H:%M') %></td>
               <td><%= ticket.allocated_slot.strftime('%H:%M') %></td>
               <td><%= ticket.status.titleize %></td>
