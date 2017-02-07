@@ -17,6 +17,7 @@
     <thead>
       <th>ID</th>
       <th>Customer</th>
+      <th>Location</th>
       <th>Status</th>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
         <tr>
           <td><%= ticket.id %></td>
           <td><%= ticket.customer.name %></td>
+          <td><%= ticket.customer.address %></td>
           <td><%= ticket.status %></td>
         </tr>
       <% end %>

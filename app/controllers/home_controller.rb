@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   def index
+    Ticket.update_status_after_finish
     @ticket = Ticket.new
     @tickets = Ticket.includes(:service_engineers, :customer).order(raised_at: :desc).paginate(:page => params[:page], :per_page => 10)
   end
