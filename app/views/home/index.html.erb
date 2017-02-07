@@ -22,6 +22,7 @@
           <th>Service Engineer Name</th>
           <th>Date</th>
           <th>Raised Time</th>
+          <th>Allocated Slot</th>
           <th>Status</th>
         </tr>
       </thead>
@@ -34,6 +35,7 @@
               <td><%= current_engineer.name %></td>
               <td><%= Date.today %></td>
               <td><%= ticket.raised_at.strftime('%H:%M') %></td>
+              <td><%= ticket.allocated_slot.strftime('%H:%M') %></td>
               <td><%= ticket.status.titleize %></td>
             </tr>
           <% end %>
