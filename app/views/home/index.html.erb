@@ -1,0 +1,57 @@
+<div class="col-sm-4">
+  <h3>Add Ticket </h3>
+  <%= form_for @ticket do |f| %>
+    <div class="form-group">
+      <%= f.label :customer_id, 'Select Customer'%>
+        <%= f.select :customer_id, customers_for_select,{:include_blank => "Select Customer"}, {:class => "form-control selectpicker", data: { "live-search" => true }} %>
+    </div>
+    <div class="form-group">
+      <p id="customer_address">Address will be displayed here</p>
+    </div>
+    <div class="form-group">
+      <%= f.submit 'Save and Assign', class: 'btn btn-success'%>
+    </div>
+  <% end %>
+</div>
+<div class="col-sm-8">
+  <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Ticket ID</th>
+          <th>Customer Name</th>
+          <th>Service Engineer Name</th>
+          <th>Date</th>
+          <th>Raised Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+        <tbody>
+          <% @tickets.each do |ticket| %>
+            <% current_engineer = ticket.service_engineers.first %>
+            <tr>
+              <td><%= ticket.id %></td>
+              <td><%= ticket.customer.name %></td>
+              <td><%= current_engineer.name %></td>
+              <td><%= Date.today %></td>
+              <td><%= ticket.raised_at.strftime('%H:%M') %></td>
+              <td><%= ticket.status.titleize %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= will_paginate @tickets %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $('.selectpicker').selectpicker();
+    $('.selectpicker').on('changed.bs.select', function(e){
+      $.ajax({
+        url: "/address",
+        data: { id: e.target.value }
+      })
+    })
+
+  })
+</script>

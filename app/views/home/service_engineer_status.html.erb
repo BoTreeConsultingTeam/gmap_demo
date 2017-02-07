@@ -1,0 +1,23 @@
+<div class="col-sm-12">
+  <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>SE ID</th>
+          <th>Name</th>
+          <th>Tickets</th>
+          <th>View Route</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @service_engineers.each do |se| %>
+          <tr>
+            <td><%= se.id %></td>
+            <td><%= se.name %></td>
+            <td><%= se.tickets.count %></td>
+            <td><%= link_to 'View Route', display_route_path(se) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= will_paginate @service_engineers %>
+</div>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  customer_id: 1
+  status: MyString
+  raised_at: 2017-02-06 11:40:07
+
+two:
+  customer_id: 1
+  status: MyString
+  raised_at: 2017-02-06 11:40:07
