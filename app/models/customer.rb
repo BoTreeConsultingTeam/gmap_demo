@@ -2,8 +2,11 @@ class Customer < ActiveRecord::Base
   has_many :tickets
   has_many :service_engineers, through: :tickets
   validates :name, :address, :latitude, :longitude, presence: true
+
   ALL_SLOTS = ["09 AM", "10 AM", "11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM","06 PM"]
   FIRST_SLOT = "09 AM"
+  TOTAL_SLOTS_OF_DAY = 9
+
   def raise_ticket
     ticket = tickets.build(status: 'open', raised_at: Time.now)
     sorted_unassigned_service_engineers = ServiceEngineer.all_unassigned_engineers(self)
@@ -12,7 +15,7 @@ class Customer < ActiveRecord::Base
     sorted_nearby_tickets.each do |nearby_ticket|
       @search_finish = false
       @se = ServiceEngineer.find(nearby_ticket[:se_id])
-      if @se.tickets.present? && @se.tickets.count < 9
+      if @se.tickets.present? && @se.tickets.count < TOTAL_SLOTS_OF_DAY
         slots = @se.tickets.map(&:allocated_slot)
         allocated_slots = slots.map{|slot|slot.strftime('%I %p')} || []
         available_slots = ALL_SLOTS - allocated_slots
@@ -42,11 +45,9 @@ class Customer < ActiveRecord::Base
           allocated_slot = Time.parse(FIRST_SLOT)
         end
     end
-
-    service_engineer_id = @se.id
     ticket.allocated_slot = allocated_slot
     if ticket.save
-      service_engineer_ticket = ServiceEngineersTicket.new(ticket_id: ticket.id, service_engineer_id: service_engineer_id)
+      service_engineer_ticket = ServiceEngineersTicket.new(ticket_id: ticket.id, service_engineer_id: @se.id)
       unless service_engineer_ticket.save
         errors.add(:base, "Unable to assign service engineer.")
       end
