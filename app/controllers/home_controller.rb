@@ -38,6 +38,9 @@ class HomeController < ApplicationController
     @hash = @hash.to_json
   end
 
+  def documentation
+  end
+  
   def service_engineer_status
     @service_engineers = ServiceEngineer.includes(tickets: :customer).paginate(:page => params[:page], :per_page => 10)
   end
