@@ -11,10 +11,10 @@ ServiceEngineer.destroy_all
 final_cords = []
 base_cord = Geocoder.coordinates("Ahmedabad")
 
-radius = (25.0/111300).to_f
+radius = (100.0/111300).to_f
 30.times do
-  u = rand(1..100).to_f
-  v = rand(101..200).to_f
+  u = rand(1..10000).to_f
+  v = rand(101..20000).to_f
 
   w = radius * Math.sqrt(u)
   t = 2 * Math::PI * v
@@ -38,18 +38,9 @@ final_cords[10..30].each do |location|
   Customer.create(name: Faker::Name.name, latitude: location.first, longitude: location.last, address: address )
 end
 
-
 time = Time.now
 Customer.first(10).each_with_index do |customer, index|
   count = index + 9
   ticket = customer.tickets.build(status: 'open',raised_at: time + (count).hour )
   ticket.save
-end
-
-service_engineers = ServiceEngineer.all
-tickets = Ticket.all
-
-tickets.each_with_index do |ticket, index|
-    se_ticket = ServiceEngineersTicket.new(ticket_id: tickets[index], service_engineer_id: service_engineers[index])
-    se_ticket.save
 end

@@ -30,7 +30,7 @@
             <td><%= ticket.customer.name %></td>
             <td><%= ticket.customer.address %></td>
             <td><%= format_slot_time(ticket) %></td>
-            <td><%= ticket.status %></td>
+            <td><%= ticket.status.titleize %></td>
           </tr>
         <% end %>
       </tbody>
@@ -46,15 +46,35 @@
     </div>
   </div>
 <% end %>
+
 <script>
-  handler = Gmaps.build('Google');
   var polylines = <%=raw @hash %>
-  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-    markers = handler.addMarkers(polylines);
-    handler.bounds.extendWith(markers);
-    handler.addPolyline(polylines); // and not addPolylines
-    handler.bounds.extend(polylines[0]);
-    handler.bounds.extend(polylines[polylines.length - 1]);
-    handler.fitMapToBounds();
-  });
+  var map = new GMaps({el: '#map', lat: polylines[0].lat, lng: polylines[0].lng})
+    var i = 0;
+    for(i; i < (polylines.length - 1) ; i += 1){
+      map.drawRoute({
+        origin: [polylines[i].lat, polylines[i].lng],
+        destination: [polylines[i+1].lat, polylines[i+1].lng],
+        travelMode: 'driving',
+        strokeColor: '#131540',
+        strokeOpacity: 0.6,
+        strokeWeight: 6
+      });
+    }
+    // Add markers
+    var i = 0;
+    for(i; i < polylines.length ; i += 1){
+      var icon = ''
+      if(polylines[i].picture == 'green'){
+        icon = '<%= asset_url('grren_icon.png')%>'
+      }
+      map.addMarker({
+        lat: polylines[i].lat,
+        lng: polylines[i].lng,
+        icon   : icon,
+        infoWindow: {
+          content: polylines[i].infowindow
+        }
+      });
+    }
 </script>

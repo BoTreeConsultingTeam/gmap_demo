@@ -14,11 +14,26 @@ class HomeController < ApplicationController
 
   def dir_route
     @service_engineer = ServiceEngineer.includes(:tickets).order('tickets.created_at DESC').find(params[:id])
-    customers = @service_engineer.tickets.map(&:customer)
-    @locations = customers.map{|l|[l.latitude, l.longitude]}
-    @hash = Gmaps4rails.build_markers(@locations.uniq) do |ticket, marker|
-      marker.lat ticket.first
-      marker.lng ticket.last
+    tickets = @service_engineer.tickets
+    @locations = tickets.map{|l|[l.customer.latitude, l.customer.longitude]}
+    @hash = Gmaps4rails.build_markers(tickets.uniq) do |ticket, marker|
+      if ticket.status == 'open'
+        marker.picture "green"
+      else
+        marker.picture ""
+      end
+      marker.infowindow "<b>Ticket ID: #{ticket.id}</b><br>#{ticket.customer.name}<br>#{ticket.customer.address}"
+      marker.lat ticket.customer.latitude
+      marker.lng ticket.customer.longitude
+    end
+    @hash = @hash.to_json
+  end
+
+  def customer_locations
+
+    @hash = Gmaps4rails.build_markers(Customer.all.uniq) do |customer, marker|
+      marker.lat customer.latitude
+      marker.lng customer.longitude
     end
     @hash = @hash.to_json
   end

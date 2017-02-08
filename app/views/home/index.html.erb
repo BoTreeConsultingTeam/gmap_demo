@@ -3,7 +3,7 @@
   <%= form_for @ticket do |f| %>
     <div class="form-group">
       <%= f.label :customer_id, 'Select Customer'%>
-        <%= f.select :customer_id, customers_for_select,{:include_blank => "Select Customer"}, {:class => "form-control selectpicker", data: { "live-search" => true }} %>
+        <%= f.select :customer_id, customers_for_select,{:include_blank => "Select Customer"}, {:class => "form-control selectpicker", data: { "live-search" => true },required: 'required'}  %>
     </div>
     <div class="form-group">
       <p id="customer_address">Address will be displayed here</p>
@@ -35,7 +35,7 @@
                 <td><%= ticket.id %></td>
                 <td><%= ticket.customer.name %></td>
                 <td><%= current_engineer.name %></td>
-                <td><%= ticket.raised_at.localtime.strftime("%m/%d/%y %I:%M%p") %></td>
+                <td><%= ticket.raised_at.strftime("%m/%d/%y %I:%M%p") %></td>
                 <td><%= format_slot_time(ticket) %></td>
                 <td><%= ticket.status.titleize %></td>
               </tr>
@@ -58,6 +58,6 @@
         data: { id: e.target.value }
       })
     })
-
   })
+
 </script>

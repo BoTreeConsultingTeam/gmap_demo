@@ -1,0 +1,18 @@
+<div class="col-sm-12">
+  <div style='width: 800px;'>
+    <div id="map" style='width: 1000px; height: 800px;'></div>
+  </div>
+</div>
+
+<script>
+  handler = Gmaps.build('Google');
+  var polylines = <%=raw @hash %>
+  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(polylines);
+    handler.bounds.extendWith(markers);
+    handler.addPolylines(polylines);
+    handler.bounds.extend(polylines[0]);
+    handler.bounds.extend(polylines[polylines.length - 1]);
+    handler.fitMapToBounds();
+  });
+</script>

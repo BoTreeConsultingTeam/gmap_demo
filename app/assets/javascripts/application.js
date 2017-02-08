@@ -16,5 +16,4 @@
 //= require gmaps/google
 //= require bootstrap-sprockets
 //= require bootstrap-select.min
-//= require gmaps.min
 //= require_tree .
