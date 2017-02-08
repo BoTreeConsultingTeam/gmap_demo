@@ -35,7 +35,7 @@
                 <td><%= ticket.id %></td>
                 <td><%= ticket.customer.name %></td>
                 <td><%= current_engineer.name %></td>
-                <td><%= ticket.raised_at.strftime("%m/%d/%y %I:%M%p") %></td>
+                <td><%= ticket.raised_at.strftime("%m/%d/%y at %H:%M") %></td>
                 <td><%= format_slot_time(ticket) %></td>
                 <td><%= ticket.status.titleize %></td>
               </tr>

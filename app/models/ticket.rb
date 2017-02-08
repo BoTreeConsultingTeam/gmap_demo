@@ -17,8 +17,7 @@ class Ticket < ActiveRecord::Base
 
     tickets_locations.each do |ticket_hash|
       distance_in_mile = Geocoder::Calculations.distance_between([customer.latitude, customer.longitude], [ticket_hash[:latitude], ticket_hash[:longitude]])
-      dist_in_meters = distance_in_mile * 1.60934 * 1000
-      if dist_in_meters < 1000
+      if distance_in_mile < ENV['MAX_DISTANCE']
         nearby_tickets << { distance: (distance_in_mile), service_engineer_id: ticket_hash[:service_engineer_id]}
       end
     end
