@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170207094504) do
+ActiveRecord::Schema.define(version: 20170207132353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,10 +44,10 @@ ActiveRecord::Schema.define(version: 20170207094504) do
   create_table "tickets", force: :cascade do |t|
     t.integer  "customer_id"
     t.string   "status"
-    t.time     "raised_at"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.time     "allocated_slot"
+    t.datetime "raised_at"
+    t.datetime "allocated_slot"
   end
 
 end

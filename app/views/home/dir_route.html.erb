@@ -18,6 +18,7 @@
       <th>ID</th>
       <th>Customer</th>
       <th>Location</th>
+      <th>Allocation Slot Time </th>
       <th>Status</th>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
           <td><%= ticket.id %></td>
           <td><%= ticket.customer.name %></td>
           <td><%= ticket.customer.address %></td>
+          <td><%= format_slot_time(ticket) %></td>
           <td><%= ticket.status %></td>
         </tr>
       <% end %>

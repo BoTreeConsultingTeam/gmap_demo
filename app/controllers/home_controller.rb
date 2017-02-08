@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   def index
     Ticket.update_status_after_finish
     @ticket = Ticket.new
-    @tickets = Ticket.includes(:service_engineers, :customer).order(raised_at: :desc).paginate(:page => params[:page], :per_page => 10)
+    @tickets = Ticket.includes(:service_engineers, :customer).where(status: 'open').order(raised_at: :desc).paginate(:page => params[:page], :per_page => 10)
   end
 
   def address
@@ -13,7 +13,7 @@ class HomeController < ApplicationController
   end
 
   def dir_route
-    @service_engineer = ServiceEngineer.includes(:tickets).find(params[:id])
+    @service_engineer = ServiceEngineer.includes(:tickets).order('tickets.created_at DESC').find(params[:id])
     customers = @service_engineer.tickets.map(&:customer)
     @locations = customers.map{|l|[l.latitude, l.longitude]}
     @hash = Gmaps4rails.build_markers(@locations.uniq) do |ticket, marker|

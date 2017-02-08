@@ -11,20 +11,24 @@ class Ticket < ActiveRecord::Base
     open_tickets = includes(:customer).where(status: 'open')
     tickets_locations = open_tickets.map{|ticket| { latitude: ticket.customer.latitude,
       longitude: ticket.customer.longitude,
-      se_id: ticket.current_service_engineer.id
+      service_engineer_id: ticket.current_service_engineer.id
       }
     }
 
     tickets_locations.each do |ticket_hash|
       distance_in_mile = Geocoder::Calculations.distance_between([customer.latitude, customer.longitude], [ticket_hash[:latitude], ticket_hash[:longitude]])
-      nearby_tickets << { distance: (distance_in_mile), se_id: ticket_hash[:se_id]}
+      nearby_tickets << { distance: (distance_in_mile), service_engineer_id: ticket_hash[:service_engineer_id]}
     end
     nearby_tickets.sort_by { |k| k[:distance] }
   end
 
   def self.update_status_after_finish
     all.where(status: 'open').each do |ticket|
-      ticket.update_attribute(:status, "close") if Time.now.hour > (ticket.allocated_slot.hour + 1)
+      if (Time.zone.today > ticket.allocated_slot.to_date) ||
+          (Time.zone.today == ticket.allocated_slot.to_date &&
+            ((Time.zone.now.localtime - ticket.allocated_slot.localtime) > 3600))
+        ticket.update_attribute(:status, "close")
+      end
     end
   end
 end
