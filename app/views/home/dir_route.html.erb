@@ -1,3 +1,4 @@
+<% tickets = @service_engineer.tickets %>
 <div class="col-sm-12">
   <h3> User Details </h3>
   <table class="table table-bordered">
@@ -13,32 +14,38 @@
 </div>
 <div class="col-sm-12">
   <h3>Tickets </h3>
-  <table class="table table-bordered">
-    <thead>
-      <th>ID</th>
-      <th>Customer</th>
-      <th>Location</th>
-      <th>Allocation Slot Time </th>
-      <th>Status</th>
-    </thead>
-    <tbody>
-      <% @service_engineer.tickets.each do |ticket| %>
-        <tr>
-          <td><%= ticket.id %></td>
-          <td><%= ticket.customer.name %></td>
-          <td><%= ticket.customer.address %></td>
-          <td><%= format_slot_time(ticket) %></td>
-          <td><%= ticket.status %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <% if tickets.present? %>
+    <table class="table table-bordered">
+      <thead>
+        <th>ID</th>
+        <th>Customer</th>
+        <th>Location</th>
+        <th>Allocation Slot Time </th>
+        <th>Status</th>
+      </thead>
+      <tbody>
+        <% tickets.each do |ticket| %>
+          <tr>
+            <td><%= ticket.id %></td>
+            <td><%= ticket.customer.name %></td>
+            <td><%= ticket.customer.address %></td>
+            <td><%= format_slot_time(ticket) %></td>
+            <td><%= ticket.status %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    No tickets assigned yet.
+  <% end %>
 </div>
-<div class="col-sm-12">
-  <div style='width: 800px;'>
-    <div id="map" style='width: 1000px; height: 800px;'></div>
+<% if tickets.present? %>
+  <div class="col-sm-12">
+    <div style='width: 800px;'>
+      <div id="map" style='width: 1000px; height: 800px;'></div>
+    </div>
   </div>
-</div>
+<% end %>
 <script>
   handler = Gmaps.build('Google');
   var polylines = <%=raw @hash %>

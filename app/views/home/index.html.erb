@@ -14,32 +14,38 @@
   <% end %>
 </div>
 <div class="col-sm-8">
-  <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Ticket ID</th>
-          <th>Customer Name</th>
-          <th>Service Engineer Name</th>
-          <th>Raised Time</th>
-          <th>Allocated Slot</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-        <tbody>
-          <% @tickets.each do |ticket| %>
-            <% current_engineer = ticket.current_service_engineer %>
-            <tr>
-              <td><%= ticket.id %></td>
-              <td><%= ticket.customer.name %></td>
-              <td><%= current_engineer.name %></td>
-              <td><%= ticket.raised_at.localtime.strftime("%m/%d/%y %I:%M%p") %></td>
-              <td><%= format_slot_time(ticket) %></td>
-              <td><%= ticket.status.titleize %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <%= will_paginate @tickets %>
+  <h3>Raised Tickets</h3>
+  <hr>
+  <% if @tickets.present? %>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Ticket ID</th>
+            <th>Customer Name</th>
+            <th>Service Engineer Name</th>
+            <th>Raised Time</th>
+            <th>Allocated Slot</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+          <tbody>
+            <% @tickets.each do |ticket| %>
+              <% current_engineer = ticket.current_service_engineer %>
+              <tr>
+                <td><%= ticket.id %></td>
+                <td><%= ticket.customer.name %></td>
+                <td><%= current_engineer.name %></td>
+                <td><%= ticket.raised_at.localtime.strftime("%m/%d/%y %I:%M%p") %></td>
+                <td><%= format_slot_time(ticket) %></td>
+                <td><%= ticket.status.titleize %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <%= will_paginate @tickets %>
+    <% else %>
+      No Tickets raised yet.
+    <% end %>
   </div>
 </div>
 
