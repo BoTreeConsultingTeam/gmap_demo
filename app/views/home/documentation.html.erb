@@ -1,4 +1,4 @@
-<h2>Assumptions</h2>
+<h3>Assumptions</h3>
 <ul>
   <li>We have added 20 customers from different location within 50 miles of radius.</li>
   <li>We have added 10 service engineers from different locations within 50 miles of radius.</li>
@@ -6,4 +6,14 @@
     take 1 hour to finish. After one hour that ticket status will be set to Close automatically.</li>
   <li></li>
   <li></li>
+</ul>
+
+<h3>How it works?</h3>
+<ul>
+  <li>When a customer raises a ticket, Algorithm searches for the nearby open tickets within a 1 KM of radius.</li>
+  <li>If any nearby tickets found then the algorithm check the time slots alloted to service engineer who is working on that nearby open ticket.</li>
+  <li>If service engineer is available for any slot on that day then assign that slot for that ticket.</li>
+  <li>If service engineer has no available slot for today then check for the next nearby ticket and the slots of that service engineer.</li>
+  <li>If no service engineer is available from that nearby ticket then assign that ticket to any nearest unassigned service engineer.</li>
+  <li>If no nearby ticket found then assign that ticket to nearest unassigned service engineer.</li>
 </ul>
