@@ -18,7 +18,9 @@ customers = [[43.020869, -87.935931, "1011 S 18th St, Milwaukee, WI 53204, USA",
  [42.925285, -88.692603, "2361 Co Rd D, Fort Atkinson, WI 53538, USA", "Mrs. Justen Sanford"],
  [43.033207, -87.97513, "239 N Story Pkwy, Milwaukee, WI 53208, USA", "Dr. Adolph Hermiston"],
  [43.191117, -88.343707, "O Neil Rd, Merton, WI, USA", "Derek Herman"],
- [42.763072, -88.214256, "111 S River St, Waterford, WI 53185, USA", "Gene Moen"]]
+ [42.763072, -88.214256, "111 S River St, Waterford, WI 53185, USA", "Gene Moen"],
+ [42.477242, -88.09564, "939 Main St, Antioch, IL 60002, USA", "Bruce Lee"],
+ [43.005559, -88.807327, "109 N Main St, Jefferson, WI 53549, USA", "Joseph Paul"]]
 
 customers.each do |customer|
   Customer.create(name: customer[3], latitude: customer[0], longitude: customer[1], address: customer[2] )
@@ -32,7 +34,8 @@ service_engineers = [[43.228617, -88.110369, "W162N11634 Park Ave, Germantown, W
  [42.726125, -88.5426, "N6444 US-12, Elkhorn, WI 53121, USA", "Orlo Donnelly"],
  [42.505297, -88.070639, "21727 121st St, Bristol, WI 53104, USA", "Mr. General Schoen"],
  [43.151119, -88.246204, "2513 Howard Ln, Sussex, WI 53089, USA", "Judah Crona"],
- [42.800851, -88.012584, "7625 W 5 Mile Rd, Franksville, WI 53126, USA", "Torrance Hodkiewicz"]]
+ [42.800851, -88.012584, "7625 W 5 Mile Rd, Franksville, WI 53126, USA", "Torrance Hodkiewicz"],
+ [43.082845, -88.259531, "252-306 Oakton Ave, Pewaukee, WI 53072, USA", "Tom Henry"]]
 
 service_engineers.each do |service_engineer|
   ServiceEngineer.create(name: service_engineer[3], latitude: service_engineer[0], longitude: service_engineer[1], location: service_engineer[2])
