@@ -8,7 +8,7 @@ class TicketsController < ApplicationController
       else
         flash[:error] = "Unable to create ticket."
       end
-      redirect_to root_path
+      redirect_to home_index_path
     end
   end
 

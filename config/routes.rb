@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  root 'home#index'
+  root 'home#documentation'
+  resources :home
   resources :tickets
   get '/address' => 'home#address'
   get '/route/:id' => 'home#dir_route', as: :display_route
