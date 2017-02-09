@@ -33,14 +33,24 @@ class Customer < ActiveRecord::Base
 
     if !@search_finish
       @service_engineer = ServiceEngineer.find(sorted_unassigned_service_engineers.first[:service_engineer_id])
-      available_slots = []
 
-      ALL_SLOTS.each do |sl|
-        available_slots << sl if future_slot?(sl, ticket)
+      possible_available_slots = []
+      if @service_engineer.tickets.present? && @service_engineer.tickets.count < TOTAL_SLOTS_OF_DAY
+        slots = @service_engineer.tickets.map(&:allocated_slot)
+        allocated_slots = slots.map{|slot|slot.strftime(TIME_FORMAT)} || []
+        available_slots = ALL_SLOTS - allocated_slots
+        available_slots.each do |slot|
+          possible_available_slots << slot if future_slot?(slot, ticket)
+        end
+      else
+        available_slots = []
+        ALL_SLOTS.each do |sl|
+          possible_available_slots << sl if future_slot?(sl, ticket)
+        end
       end
       allocated_slot =
-        if available_slots.present?
-          Time.zone.parse(available_slots.first)
+        if possible_available_slots.present?
+          Time.zone.parse(possible_available_slots.first)
         else
           Time.zone.parse(FIRST_SLOT)
         end
