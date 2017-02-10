@@ -68,11 +68,13 @@
       var icon = ''
       if(polylines[i].picture == 'green'){
         icon = '<%= asset_url('grren_icon.png')%>'
+      }else if(polylines[i].picture == 'blue'){
+        icon = '<%= asset_url('blue.png')%>'
       }
       map.addMarker({
         lat: polylines[i].lat,
         lng: polylines[i].lng,
-        icon   : icon,
+        icon: icon,
         infoWindow: {
           content: polylines[i].infowindow
         }

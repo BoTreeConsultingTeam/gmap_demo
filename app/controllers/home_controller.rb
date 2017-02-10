@@ -26,6 +26,8 @@ class HomeController < ApplicationController
       marker.lat ticket.customer.latitude
       marker.lng ticket.customer.longitude
     end
+    se_location = { picture: 'blue', infowindow: "#{@service_engineer.name}<br>#{@service_engineer.location}", lat: @service_engineer.latitude, lng: @service_engineer.longitude}
+    @hash = @hash.unshift(se_location)
     @hash = @hash.to_json
   end
 
